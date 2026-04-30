@@ -1,0 +1,29 @@
+# ===================================================
+# PERSON COURSE SERVICE CONFIGURATION
+# ===================================================
+
+spring:
+  application:
+    name: person-course-service
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/schooldb
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8180/realms/school-realm
+          jwk-set-uri: http://localhost:8180/realms/school-realm/protocol/openid-connect/certs
+
+server:
+  port: 8082
