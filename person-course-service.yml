@@ -23,7 +23,7 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: http://localhost:8180/realms/school-realm
-          jwk-set-uri: http://localhost:8180/realms/school-realm/protocol/openid-connect/certs
+          jwk-set-uri: http://host.docker.internal:8180/realms/school-realm/protocol/openid-connect/certs
 
 server:
   port: 8082
