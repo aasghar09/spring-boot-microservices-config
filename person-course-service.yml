@@ -11,6 +11,13 @@ spring:
     username: root
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
+  
+  springdoc:
+   swagger-ui:
+     url: /v3/api-docs
+     config-url: /v3/api-docs/swagger-config
+   api-docs:
+     path: /v3/api-docs
 
   jpa:
     hibernate:
