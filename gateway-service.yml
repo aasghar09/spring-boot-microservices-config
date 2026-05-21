@@ -1,22 +1,37 @@
+# ===================================================
+# GATEWAY SERVICE CONFIGURATION
+# ===================================================
+
 spring:
+  application:
+    name: gateway-service
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8180/realms/school-realm
+          jwk-set-uri: http://localhost:8180/realms/school-realm/protocol/openid-connect/certs
+
   cloud:
     gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
       routes:
         - id: person-course-service-persons
           uri: lb://person-course-service
           predicates:
             - Path=/api/persons/**
-
         - id: person-course-service-courses
           uri: lb://person-course-service
           predicates:
             - Path=/api/courses/**
-
         - id: person-course-service-enrollments
           uri: lb://person-course-service
           predicates:
             - Path=/api/enrollments/**
-
         - id: person-course-service-swagger-ui
           uri: lb://person-course-service
           predicates:
@@ -26,3 +41,6 @@ spring:
           uri: lb://person-course-service
           predicates:
             - Path=/v3/api-docs/**
+
+server:
+  port: 8081
