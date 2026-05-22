@@ -11,7 +11,15 @@ spring:
     username: root
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
-  
+
+spring:
+  data:
+    web:
+      pageable:
+        default-page-size: 10
+        max-page-size: 100
+        one-indexed-parameters: false
+         
   springdoc:
    swagger-ui:
      url: /v3/api-docs
