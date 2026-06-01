@@ -24,40 +24,94 @@ spring:
           uri: lb://person-course-service
           predicates:
             - Path=/api/persons/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: personCourseCircuitBreaker
+                fallbackUri: forward:/fallback/person-course
+
         - id: person-course-service-courses
           uri: lb://person-course-service
           predicates:
             - Path=/api/courses/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: personCourseCircuitBreaker
+                fallbackUri: forward:/fallback/person-course
+
         - id: person-course-service-enrollments
           uri: lb://person-course-service
           predicates:
             - Path=/api/enrollments/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: personCourseCircuitBreaker
+                fallbackUri: forward:/fallback/person-course
+
         - id: person-course-service-swagger-ui
           uri: lb://person-course-service
           predicates:
             - Path=/swagger-ui/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: personCourseCircuitBreaker
+                fallbackUri: forward:/fallback/person-course
 
         - id: person-course-service-api-docs
           uri: lb://person-course-service
           predicates:
             - Path=/v3/api-docs/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: personCourseCircuitBreaker
+                fallbackUri: forward:/fallback/person-course
 
         - id: person-course-service-swagger-ui-html
           uri: lb://person-course-service
           predicates:
             - Path=/swagger-ui.html
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: personCourseCircuitBreaker
+                fallbackUri: forward:/fallback/person-course
 
         - id: person-course-service-webjars
           uri: lb://person-course-service
           predicates:
             - Path=/webjars/**
-            
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: personCourseCircuitBreaker
+                fallbackUri: forward:/fallback/person-course
 
 server:
   port: 8081
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      personCourseCircuitBreaker:
+        sliding-window-size: 10
+        failure-rate-threshold: 50
+        wait-duration-in-open-state: 30s
+        permitted-number-of-calls-in-half-open-state: 3
+        automatic-transition-from-open-to-half-open-enabled: true
+  timelimiter:
+    instances:
+      personCourseCircuitBreaker:
+        timeout-duration: 5s
 
 management:
   endpoints:
     web:
       exposure:
-        include: health,info,gateway
+        include: health,info,gateway,circuitbreakers
+  endpoint:
+    health:
+      show-details: always
