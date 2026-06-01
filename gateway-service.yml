@@ -13,6 +13,10 @@ spring:
           issuer-uri: http://localhost:8180/realms/school-realm
           jwk-set-uri: http://host.docker.internal:8180/realms/school-realm/protocol/openid-connect/certs
 
+  redis:
+    host: redis
+    port: 6379
+
   cloud:
     gateway:
       discovery:
@@ -29,6 +33,12 @@ spring:
               args:
                 name: personCourseCircuitBreaker
                 fallbackUri: forward:/fallback/person-course
+            - name: RequestRateLimiter
+              args:
+                redis-rate-limiter.replenishRate: 10
+                redis-rate-limiter.burstCapacity: 20
+                redis-rate-limiter.requestedTokens: 1
+                key-resolver: "#{@userKeyResolver}"
 
         - id: person-course-service-courses
           uri: lb://person-course-service
@@ -39,6 +49,12 @@ spring:
               args:
                 name: personCourseCircuitBreaker
                 fallbackUri: forward:/fallback/person-course
+            - name: RequestRateLimiter
+              args:
+                redis-rate-limiter.replenishRate: 10
+                redis-rate-limiter.burstCapacity: 20
+                redis-rate-limiter.requestedTokens: 1
+                key-resolver: "#{@userKeyResolver}"
 
         - id: person-course-service-enrollments
           uri: lb://person-course-service
@@ -49,6 +65,12 @@ spring:
               args:
                 name: personCourseCircuitBreaker
                 fallbackUri: forward:/fallback/person-course
+            - name: RequestRateLimiter
+              args:
+                redis-rate-limiter.replenishRate: 10
+                redis-rate-limiter.burstCapacity: 20
+                redis-rate-limiter.requestedTokens: 1
+                key-resolver: "#{@userKeyResolver}"
 
         - id: person-course-service-swagger-ui
           uri: lb://person-course-service
