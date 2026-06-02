@@ -38,7 +38,7 @@ spring:
                 redis-rate-limiter.replenishRate: 10
                 redis-rate-limiter.burstCapacity: 20
                 redis-rate-limiter.requestedTokens: 1
-                key-resolver: "#{@userKeyResolver}"
+                key-resolver: #{@userKeyResolver}
 
         - id: person-course-service-courses
           uri: lb://person-course-service
@@ -54,7 +54,7 @@ spring:
                 redis-rate-limiter.replenishRate: 10
                 redis-rate-limiter.burstCapacity: 20
                 redis-rate-limiter.requestedTokens: 1
-                key-resolver: "#{@userKeyResolver}"
+                key-resolver: #{@userKeyResolver}
 
         - id: person-course-service-enrollments
           uri: lb://person-course-service
@@ -70,7 +70,7 @@ spring:
                 redis-rate-limiter.replenishRate: 10
                 redis-rate-limiter.burstCapacity: 20
                 redis-rate-limiter.requestedTokens: 1
-                key-resolver: "#{@userKeyResolver}"
+                key-resolver: #{@userKeyResolver}
 
         - id: person-course-service-swagger-ui
           uri: lb://person-course-service
